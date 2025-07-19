@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Listing, Booking, Review
+from .models import Listing, Booking
 
 class ListingSerializer(serializers.ModelSerializer):
     """Serializer for the Listing model"""
@@ -28,13 +28,3 @@ class BookingSerializer(serializers.ModelSerializer):
                 "End date must be after start date"
             )
         return data
-
-class ReviewSerializer(serializers.ModelSerializer):
-    """Serializer for the Review model"""
-    class Meta:
-        model = Review
-        fields = [
-            'id', 'listing', 'user', 'rating',
-            'comment', 'created_at'
-        ]
-        read_only_fields = ['id', 'created_at'] 
