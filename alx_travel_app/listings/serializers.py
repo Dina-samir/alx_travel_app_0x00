@@ -1,17 +1,40 @@
-from .models import Listing, Booking,Review
 from rest_framework import serializers
+from .models import Listing, Booking, Review
 
 class ListingSerializer(serializers.ModelSerializer):
+    """Serializer for the Listing model"""
     class Meta:
         model = Listing
-        fields = '__all__'
+        fields = [
+            'id', 'host', 'title', 'description',
+            'location', 'price_per_night', 'created_at'
+        ]
+        read_only_fields = ['id', 'created_at']
 
 class BookingSerializer(serializers.ModelSerializer):
+    """Serializer for the Booking model"""
     class Meta:
         model = Booking
-        fields = '__all__'
+        fields = [
+            'id', 'listing', 'guest', 'start_date',
+            'end_date', 'status', 'status', 'created_at'
+        ]
+        read_only_fields = ['id', 'created_at']
+
+    def validate(self, data):
+        """Validate booking dates"""
+        if data['start_date'] >= data['end_date']:
+            raise serializers.ValidationError(
+                "End date must be after start date"
+            )
+        return data
 
 class ReviewSerializer(serializers.ModelSerializer):
+    """Serializer for the Review model"""
     class Meta:
         model = Review
-        fields = '__all__'
+        fields = [
+            'id', 'listing', 'user', 'rating',
+            'comment', 'created_at'
+        ]
+        read_only_fields = ['id', 'created_at'] 
