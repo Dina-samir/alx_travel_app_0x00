@@ -17,7 +17,7 @@ class BookingSerializer(serializers.ModelSerializer):
         model = Booking
         fields = [
             'id', 'listing', 'guest', 'start_date',
-            'end_date', 'status', 'status', 'created_at'
+            'end_date', 'status', 'created_at'
         ]
         read_only_fields = ['id', 'created_at']
 
@@ -28,3 +28,11 @@ class BookingSerializer(serializers.ModelSerializer):
                 "End date must be after start date"
             )
         return data
+
+    def to_internal_value(self, data):
+        for field in self.Meta.read_only_fields:
+            if field in data:
+                raise serializers.ValidationError({
+                    field: "This field is read-only."
+                })
+        return super().to_internal_value(data)

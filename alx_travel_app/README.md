@@ -102,6 +102,79 @@ drf-yasg
 django-cors-headers
 ```
 
+
+## 🗂️ Models
+
+### Listing
+| Field            | Type         | Description                  |
+|------------------|--------------|------------------------------|
+| id               | UUID         | Primary key                  |
+| title            | string       | Listing title                |
+| description      | text         | Description of the listing   |
+| price_per_night  | decimal      | Price per night              |
+| location         | string       | Location of the listing      |
+| host             | User (FK)    | Host user                    |
+| created_at       | datetime     | Creation timestamp           |
+
+### Booking
+| Field        | Type         | Description                        |
+|--------------|--------------|------------------------------------|
+| id           | UUID         | Primary key                        |
+| listing      | Listing (FK) | The listing being booked           |
+| guest        | User (FK)    | The guest making the booking       |
+| start_date   | date         | Booking start date                 |
+| end_date     | date         | Booking end date                   |
+| status       | string       | Booking status (pending/confirmed/cancelled) |
+| created_at   | datetime     | Creation timestamp                 |
+
+### Review
+| Field        | Type         | Description                        |
+|--------------|--------------|------------------------------------|
+| id           | UUID         | Primary key                        |
+| listing      | Listing (FK) | The listing being reviewed         |
+| user         | User (FK)    | The user leaving the review        |
+| rating       | integer      | Rating (1-5)                       |
+| comment      | text         | Review comment                     |
+| created_at   | datetime     | Creation timestamp                 |
+
+## 📬 API Usage Examples
+
+### List all listings
+**GET** `/api/listings/`
+
+### Retrieve a single listing
+**GET** `/api/listings/{id}/`
+
+### Create a new listing
+**POST** `/api/listings/`
+```json
+{
+  "host": 1,
+  "title": "Cozy Home",
+  "description": "A beautiful home perfect for vacations.",
+  "location": "City",
+  "price_per_night": "120.00"
+}
+```
+
+### List all bookings
+**GET** `/api/bookings/`
+
+### Create a new booking
+**POST** `/api/bookings/`
+```json
+{
+  "listing": "<listing_uuid>",
+  "guest": 2,
+  "start_date": "2025-08-10",
+  "end_date": "2025-08-12",
+  "status": "pending"
+}
+```
+
+### List all reviews (if endpoint added)
+**GET** `/api/reviews/`
+
 ## ✨ Contributing
 
 1. Fork the repo
